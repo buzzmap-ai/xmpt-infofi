@@ -33,7 +33,7 @@ export const createSigner = (key: string): Signer => {
   return {
     type: "EOA",
     getIdentifier: () => ({
-      identifierKind: IdentifierKind.Ethereum,
+      identifierKind: "ethereum",
       identifier: user.account.address.toLowerCase(),
     }),
     signMessage: async (message: string) => {
