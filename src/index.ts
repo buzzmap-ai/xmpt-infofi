@@ -188,17 +188,18 @@ function makeApiCall(endpoint: string, authorHandle: string): Promise<any> {
 
 function formatEndpoint1Response(data: any): string {
   try {
+    const profileImageUrl = data.result.profile_image_url || 'N/A';
     const name = data.result.name || 'N/A';
     const authorHandle = data.result.author_handle || 'N/A';
     const bio = data.result.bio || 'N/A';
-    const profileImageUrl = data.result.profile_image_url || 'N/A';
     const followersCount = data.result.followers_count || 'N/A';
     const tags = Array.isArray(data.result.tags) ? data.result.tags.join(', ') : (data.result.tags || 'N/A');
     
-    return `👤 Name: ${name}
+    return `${profileImageUrl}
+
+👤 Name: ${name}
 🏷️ Handle: ${authorHandle}
 📝 Bio: ${bio}
-🖼️ Profile Image: ${profileImageUrl}
 👥 Followers: ${followersCount}
 🏷️ Tags: ${tags}`;
   } catch (error) {
@@ -218,16 +219,16 @@ function formatEndpoint3Response(data: any): string {
     let response = `🌟 Top Smart Followers (${followings.length}):\n\n`;
     
     followings.forEach((follower: any, index: number) => {
+      const profileImageUrl = follower.profile_image_url || 'N/A';
       const profileName = follower.profile_name || 'N/A';
       const handle = follower.handle || 'N/A';
-      const profileImageUrl = follower.profile_image_url || 'N/A';
       const tags = Array.isArray(follower.tags) ? follower.tags.join(', ') : (follower.tags || 'N/A');
       const followersCount = follower.followers_count || 'N/A';
       const smartFollowers = follower.smart_followers || 'N/A';
       
-      response += `${index + 1}. 👤 ${profileName}
+      response += `${index + 1}. ${profileImageUrl}
+   👤 ${profileName}
    🏷️ @${handle}
-   🖼️ ${profileImageUrl}
    🏷️ ${tags}
    👥 ${followersCount} followers
    ⭐ ${smartFollowers} smart followers\n\n`;
@@ -248,7 +249,12 @@ function formatEndpoint2Response(data: any): string {
       return '❌ No tweets data found';
     }
     
-    let response = `🐦 Top Tweets (${tweets.length}):\n\n`;
+    // Try to get profile image from first tweet's author data
+    const profileImageUrl = tweets[0]?.profile_image_url || tweets[0]?.author_profile_image_url || 'N/A';
+    
+    let response = `${profileImageUrl}
+
+🐦 Top Tweets (${tweets.length}):\n\n`;
     
     tweets.forEach((tweet: any, index: number) => {
       const body = tweet.body || 'N/A';
