@@ -157,8 +157,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     console.log('Step 8: Waiting for agent response via XMTP...');
     let agentResponse: string | null = null;
     let attempts = 0;
-    const maxAttempts = 20;
-    const waitTime = 3000;
+    const maxAttempts = 3;
+    const waitTime = 10000;
 
     while (attempts < maxAttempts && !agentResponse) {
       await new Promise(resolve => setTimeout(resolve, waitTime));
